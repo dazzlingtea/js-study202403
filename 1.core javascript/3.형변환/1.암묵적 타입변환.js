@@ -28,6 +28,19 @@ console.log(true + true);    // 2
 console.log(true + false);   // 1
 console.log(false + false);  // 0
 
+var boolResult = true + true;
+console.log('boolResult: ' + typeof boolResult);
+var boolResult2 = true - true;
+console.log('boolResult: ' + typeof boolResult2);
+var boolResult3 = true * true;
+console.log('boolResult: ' + typeof boolResult3);
+var boolResult4 = true / true;
+console.log('boolResult: ' + typeof boolResult4);
+var boolResult5 = true + 1;
+console.log('boolResult: ' + typeof boolResult5);
+var boolResult6 = true - 1;
+console.log('boolResult6: ' + typeof boolResult6);
+
 // falsy : 0, '', null, undefined, NaN
 if (0) console.log('hello-1');
 if ('') console.log('hello-2');
