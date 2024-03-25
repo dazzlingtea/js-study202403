@@ -2,10 +2,10 @@ var countTrue = 0;
 var countFalse = 0;
 var start = 1;
 var end = 50;
-var quizNum = 1;
+var quizNum = 1; // 문제 번호
 
 // 난이도 상수
-const HIGH = 1, MIDDLE = 2, LOW = 3;
+const HARD = 1, NORMAL = 2, EASY = 3;
 
 alert(`~~~~~~~ 재미있는 사칙연산 게임 ~~~~~~~
 [즐겁게 문제를 푸시다가 지겨우면 0을 누르세요~]
@@ -17,13 +17,13 @@ play: while(true) {
   while(true) {
     var level = +prompt(`~~~~~~~~~~~ 난이도를 설정합니다. ~~~~~~~~~~~\n[1. 상 (1~100) | 2. 중 (1~50) | 3. 하 (1~20)]`);
     switch(level) {
-      case HIGH: 
+      case HARD: 
             end = 100;
             break;
-      case MIDDLE: 
+      case NORMAL: 
             end = 50;
             break;
-      case LOW: 
+      case EASY: 
             end = 20;
             break;
       default:
@@ -40,27 +40,28 @@ play: while(true) {
     var answer;
     
     // 랜덤 사칙연산자
-    var operator = Math.floor(Math.random() * 3) + 1;
+    var operator = Math.floor(Math.random() * 3);
   
     switch(operator) {
-      case 1:
+      case 0:
             operator = '+';
             answer = x + y;
             break;
-      case 2:
+      case 1:
             operator = '-';
             answer = x - y;
             break;
-      case 3:
+      case 2:
             operator = 'x';
             answer = x * y;
             break;
-      // case 4:
+      // case 3:
       //       operator = '÷';
       //       answer = Math.floor(x / y);
+      //       break;
     }
     
-    // 사용자 답 입력
+    // 사용자의 입력답
     var input = +prompt(`Q${quizNum}. ${x} ${operator} ${y} = ??`);
     
     // 입력 받은 답 판정
@@ -74,6 +75,7 @@ play: while(true) {
       quizNum++;
     }
 
+    // 0 입력 시 종료 또는 재시작 
     if(input === 0) {
       var exitFlag = confirm(`0을 입력하셨습니다. 종료하시겠습니까?`); 
       if(exitFlag) {
