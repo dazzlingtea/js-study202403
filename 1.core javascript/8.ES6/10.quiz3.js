@@ -165,36 +165,53 @@ console.log(JSON.stringify(q5, null, 2));
 // 결과는 `{거래자이름: 평균거래액}` 형태의 객체가 되어야 합니다.**
 // const q6 = {};
 // 거래자이름 -> reduce 토탈밸류, 거래자, {}
-const q6 = 
-  traders
-  .reduce((accum, trs)=>{
-    if(trs.trader.name in accum) {
-      accum[trs.trader.name] += trs.value;
-      accum[trs.trader.name+'Count']++;
-    } else {
-      accum[trs.trader.name] = trs.value;
-      accum[trs.trader.name+'Count'] = 1;
-    }
-    return accum
-  }, {})
-  // .reduce((result, element)=>{
-  //   result[element] = accum[element].value / accum[element].count;
-  // }, {});
-console.log(q6);
+
+console.log("=====================");
+
+const totalByPerson = traders.reduce((total, trs) => {
+  const trdPerson = trs.trader.name;
+  total[trdPerson] = (total[trdPerson] || 0) + trs.value;
+  return total;
+}, {});
+// console.log(totalByPerson);
+
+const countByPerson = traders.reduce((count, trs) => {
+  const trdPerson = trs.trader.name;
+  count[trdPerson] = (count[trdPerson] || 0) + 1;
+  return count;
+}, {});
+// console.log(countByPerson);
+
+const averageByPerson = traders.reduce((result, trs) => {
+  const trdPerson = trs.trader.name;
+  // 해당 거래자의 평균 거래액 계산하여 결과에 추가
+  result[trdPerson] = totalByPerson[trdPerson] / countByPerson[trdPerson];
+  
+  return result;
+}, {});
+
+console.log('평균 거래액');
+console.log(JSON.stringify(averageByPerson, null, 2));
+
+
 
 // 7. **2022년과 2023년 각각에서 가장 많은 거래를 한 거래자의 이름과 그 거래 횟수를 출력해주세요.**
 
 function mostFrequentTrsUser(array, year) {
-  let maxTrsUser = traders[0];
-  traders
-    .filter(trs => trs.year === year)
-    .forEach((trs) => {
-      if(trs['count']) trs.count++;
-      else trs['count'] = 1;
-    });
-  traders.reduce((maxTrsUser, trs) => {
-      if(maxTrsUser.count < trs.count) return maxTrsUser = trs;
-    });
+  
+  const filteredArr = array.filter(trs => trs.year === year);
+
+  for(let trs of filteredArr) {
+    const trsName = trs.trader.name;
+    if(filteredArr.some(ftrs => ftrs.trader.name === trsName)) {
+      trs.count = (trs.count || 0) + 1;
+    }
+  }
+
+  const maxTrsUser = filteredArr.reduce((maxTrsUser, trs) => {
+      if(!maxTrsUser || maxTrsUser.count < trs.count) return trs;
+      else return maxTrsUser;
+    }, undefined);
   console.log(`${year}년 가장 많은 거래: ${maxTrsUser.trader.name} 거래 ${maxTrsUser.count}회`);
 }
 mostFrequentTrsUser(traders, 2022);
@@ -213,6 +230,7 @@ const countTrsByCity = traders.reduce((count, trs) => {
 }, {});
 
 console.log('Q9 도시별 거래 수: ' + countTrsByCity);
+console.log(JSON.stringify(countTrsByCity, null, 2));
 
 // 10. **거래액을 기준으로 모든 거래를 오름차순으로 정렬한 후, 정렬된 리스트를 출력해주세요.
 // 각 거래 정보는 거래자 이름, 도시, 연도, 거래액을 포함해야 합니다.**
