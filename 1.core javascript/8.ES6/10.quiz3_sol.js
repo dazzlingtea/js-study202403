@@ -259,15 +259,15 @@ console.log('========================');
 const result = traders.reduce((acc, trs) => {
   // 연도별 거래자 거래 횟수 집계
   const key = `${trs.year}_${trs.trader.name}`;
-
+  
   acc[key] = (acc[key] || 0) + 1;
-
+  
   // 연도별 최대 거래 횟수 찾기
   const yearMaxKey = `max_${trs.year}`;
   if(!acc[yearMaxKey] || acc[key] > acc[yearMaxKey].count) {
     acc[yearMaxKey] = { name: trs.trader.name, count: acc[key] } 
   }
-
+  
   return acc;
 }, {});
 
@@ -278,11 +278,53 @@ console.log(`2023년 가장 많은 거래를 한 거래자: ${result.max_2023.na
 
 // 8. **모든 거래 중 거래액이 중간값인 
 //   거래의 정보(거래자 이름, 도시, 연도, 거래액)를 출력해주세요.**
+console.log('========================');
+// 거래액 오름차로 정렬
+// 정렬은 원본을 손상시킴 - 안전을 위해 복사 후 정렬
+const sortedTraders = traders.slice().sort((a, b) => a.value - b.value);
+
+// console.log(traders);
+// console.log(sortedTraders);
+
+// 중간값 거래 정보 찾기  
+// --> 정확한 중간값을 가진 거래자정보는 없으므로 짝수일 땐 두 거래자를 출력
+
+// 배열의 요소 수가 홀수면 정확한 중간 인덱스가 나오는데 
+// 짝수면 중앙 두 값의 평균을 중간값으로 한다.
+
+// 가운데 인덱스 찾기
+const middleIndex = Math.floor(sortedTraders.length / 2);
+let middleTradeInfo;
+if(sortedTraders.length % 2 === 1) { // 배열의 요소 수가 홀수인 경우
+  // 정확한 중간 인덱스를 지정
+  middleTradeInfo = sortedTraders[middleIndex];
+} else { // 짝수인 경우
+  middleTradeInfo = [sortedTraders[middleIndex-1], sortedTraders[middleIndex]];
+}
+console.log(middleTradeInfo);
 
 // 9. **각 도시에서 진행된 거래의 수를 계산해주세요. 
 //   결과는 `{도시이름: 거래수}` 형태의 객체여야 합니다.**
+
+console.log('=================');
+const trsCountByCity = traders.reduce((acc, trs) => {
+  const city = trs.trader.city;
+  if (!acc[city]) {
+    acc[city] = 1;
+  } else {
+    acc[city]++;
+  }
+  // acc[city] = (acc[city] || 0) + 1;
+  return acc;
+}, {});
+
+console.log(trsCountByCity);
 
 // 10. **거래액을 기준으로 모든 거래를 오름차순으로 정렬한 후, 
 //   정렬된 리스트를 출력해주세요. 
 //   각 거래 정보는 거래자 이름, 도시, 연도, 거래액을 포함해야 합니다.**
 
+console.log('===============================');
+
+const sortedTransactions = traders.slice().sort((a, b) => a.value - b.value);
+console.log(sortedTransactions);
