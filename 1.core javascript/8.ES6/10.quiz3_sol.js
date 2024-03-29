@@ -271,6 +271,37 @@ const result = traders.reduce((acc, trs) => {
   return acc;
 }, {});
 
+/*
+// 디스트럭쳐링으로 코드 개선
+const result = traders.reduce((acc, { trader, year }) => {
+  const { name } = trader;
+  // 연도별 거래자 거래 횟수 집계
+  const key = `${year}_${name}`;
+
+  if (!acc[key]) {
+    acc[key] = 1;
+  } else {
+    acc[key]++;
+  }
+  // 연도별 최대 거래 횟수 찾기
+  const yearMaxKey = `max_${year}`;
+  if (!acc[yearMaxKey] || acc[key] > acc[yearMaxKey].count) {
+    acc[yearMaxKey] = { name, count: acc[key] };
+  }
+  return acc;
+}, {});
+
+console.log(result);
+// 결과 출력
+console.log(
+  `2022년 가장 많은 거래를 한 거래자: ${result.max_2022.name}, 거래 횟수: ${result.max_2022.count}`
+);
+console.log(
+  `2023년 가장 많은 거래를 한 거래자: ${result.max_2023.name}, 거래 횟수: ${result.max_2023.count}`
+);
+*/
+
+
 console.log(result);
 // 결과 출력
 console.log(`2022년 가장 많은 거래를 한 거래자: ${result.max_2022.name}, 거래 횟수: ${result.max_2022.count}`);
@@ -317,6 +348,14 @@ const trsCountByCity = traders.reduce((acc, trs) => {
   // acc[city] = (acc[city] || 0) + 1;
   return acc;
 }, {});
+
+/*
+const trsCountByCity=traders.reduce((acc, {trader}) => {
+  const {city} = trader;
+  acc[city] ? acc[city]++ : acc[city] = 1;
+
+})
+*/
 
 console.log(trsCountByCity);
 

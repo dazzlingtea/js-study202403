@@ -229,6 +229,7 @@ const countTrsByCity = traders.reduce((count, trs) => {
   return count;
 }, {});
 
+
 console.log('Q9 도시별 거래 수: ' + countTrsByCity);
 console.log(JSON.stringify(countTrsByCity, null, 2));
 
