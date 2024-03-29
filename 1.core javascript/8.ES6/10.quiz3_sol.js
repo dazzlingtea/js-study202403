@@ -176,12 +176,105 @@ console.log(totalByCity);
 //   해당 거래의 연도별로 분류해주세요. 결과는 
 //   `{2022: [...거래정보], 2023: [...거래정보]}`와 같은 형태가 되어야 합니다.**
 
+// // 최종 결과 객체
+// const trsOver700kByYear = {};
+
+// for (const trs of traders) {
+//   if (trs.value >= 700000) { // 거래액 필터 조건
+//     const yearString = trs.year.toString();
+//     if (!trsOver700kByYear[yearString]) {
+//       trsOver700kByYear[yearString] = [trs];
+//     } else { // 지금 거래년도가 저장되어 있다면
+//       trsOver700kByYear[yearString].push(trs);
+//     }
+//   }
+// }
+// console.log(JSON.stringify(trsOver700kByYear, null, 2));
+
+// traders.forEach(trs => {// 위 if문들을 대입하면 됨});
+
+const trsOver700kByYear = traders
+  .filter(trs => trs.value >= 700000)
+  .reduce((transactions, trs) => {
+    const yearString = trs.year.toString();
+    if(!transactions[yearString]) transactions[yearString] = [trs];
+    else transactions[yearString].push(trs);
+    return transactions;
+  }, {});
+
+  console.log(JSON.stringify(trsOver700kByYear, null, 2));
+
+
 // 6. **각 거래자별로 그들이 진행한 거래의 
 //   평균 거래액을 계산해주세요. 
 //   결과는 `{거래자이름: 평균거래액}` 형태의 객체가 되어야 합니다.**
 
+console.log('=============================');
+// 평균을 구하려면 각자의 거래액 총합과 거래 횟수를 구해야 한다
+/*
+  {
+    '김철수': {
+      '총액': 30000000,
+      '거래횟수': 5
+    },
+    '박영희': {
+      '총액': 12000000,
+      '거래횟수': 2
+    },
+  }
+*/
+const trsDataByName = traders.reduce((averageList, trs) => {
+  const name = trs.trader.name;
+  if(!averageList[name]) { // 이 사람 처음 등장했으면 추가
+    averageList[name] = {total: trs.value, count: 1};
+  } else {
+    averageList[name].total += trs.value;
+    averageList[name].count++;
+  }
+  return averageList;
+}, {});
+
+// 평균 구하기
+for(const key in trsDataByName) {
+  trsDataByName[key].average = trsDataByName[key].total / trsDataByName[key].count;
+}
+
+console.log(trsDataByName);
+
+
 // 7. **2022년과 2023년 각각에서 가장 많은 거래를 한 거래자의 
 //   이름과 그 거래 횟수를 출력해주세요.**
+console.log('========================');
+/*
+{
+  '2022_김철수': {거래액: 234324, 횟수: 3},
+  '2023_김철수': {거래액: 214454, 횟수: 2},
+  ...
+}
+{
+  '2022': [{'김철수': {총액: ,횟수: }}]
+}
+*/
+
+const result = traders.reduce((acc, trs) => {
+  // 연도별 거래자 거래 횟수 집계
+  const key = `${trs.year}_${trs.trader.name}`;
+
+  acc[key] = (acc[key] || 0) + 1;
+
+  // 연도별 최대 거래 횟수 찾기
+  const yearMaxKey = `max_${trs.year}`;
+  if(!acc[yearMaxKey] || acc[key] > acc[yearMaxKey].count) {
+    acc[yearMaxKey] = { name: trs.trader.name, count: acc[key] } 
+  }
+
+  return acc;
+}, {});
+
+console.log(result);
+// 결과 출력
+console.log(`2022년 가장 많은 거래를 한 거래자: ${result.max_2022.name}, 거래 횟수: ${result.max_2022.count}`);
+console.log(`2023년 가장 많은 거래를 한 거래자: ${result.max_2023.name}, 거래 횟수: ${result.max_2023.count}`);
 
 // 8. **모든 거래 중 거래액이 중간값인 
 //   거래의 정보(거래자 이름, 도시, 연도, 거래액)를 출력해주세요.**
