@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style></style>
+</head>
+<body>
+  <div><button id="b1">클릭1</button></div>
+  <div><button id="b2">클릭2</button></div>
+  <div><button id="b3">클릭3</button></div>
+
+  <script>
+    //이벤트 핸들러
+    function sayHelloHandler() {
+      alert('hello!😁');
+    }
+    const $b1 = document.getElementById('b1');
+    $b1.onclick = sayHelloHandler; // 함수 전달  cf. sayHelloHandler() 반환값을 전달
+
+    const $b2 = document.getElementById('b2');
+    $b2.ondblclick = () => {
+      $b2.style.width = '150px';
+    };
+    
+    const $b3 = document.getElementById('b3');
+    $b3.onmouseover = () => {
+      $b3.style.background = 'red';
+    }
+    $b3.onmouseleave = () => {
+      $b3.style.background = 'yellow';
+    }
+
+    // 프로퍼티 방식의 단점: 같은 타입의 이벤트에는 여러 핸들러를 
+    // 바인딩 할 수 없음
+    $b3.onmouseleave = sayHelloHandler; // 이전 바인딩은 삭제되고 새로운 바인딩만 연결됨
+
+    // 이벤트 핸들러 제거
+    // 몇 초 후 코드 실행
+    setTimeout(() => {
+      // alert('메롱');
+      $b3.onmouseleave = null;
+    }, 5000); // 2000밀리초 =  2초
+
+  </script>
+</body>
+</html>
