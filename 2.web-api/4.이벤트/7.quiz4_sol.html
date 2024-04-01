@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>실시간 배경색 변경</title>
+</head>
+<body>
+
+  <input type="text" id="colorInput" placeholder="색상 이름이나 HEX 코드를 입력하세요">
+  <div id="warning" style="color: red; display: none;">유효하지 않은 색상입니다!</div>
+
+  <script>
+    const $input = document.getElementById('colorInput');
+    const $warning = document.getElementById('warning');
+
+    $input.addEventListener('change', () => {
+      console.log('텍스트 입력함!');
+    });
+    document.body.style.background = $input.value;
+
+    // 입력값이 이상하다?
+    if(document.body.style.background !== $input.value || $input.value === '') {
+      $warning.style.display = 'block';
+    } else {
+      $warning.style.display = 'none';
+    }
+    // hexcode를 rgb값으로 바꿔야 유효 제대로 판단
+
+    // 입력하자마자 로그 찍히는 경우
+    // $input.addEventListener('keydown', () => {
+    //   console.log('텍스트 입력함!');
+    // });
+    // $input.addEventListener('keyup', () => {
+    //   console.log('텍스트 입력함!');
+    // });
+    // $input.addEventListener('input', () => {
+    //   console.log('텍스트 입력함!');
+    // });
+    
+  </script>
+
+</body>
+</html>

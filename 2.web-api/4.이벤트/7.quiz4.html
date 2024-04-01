@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    input {
+      width: 250px;
+      height: 30px;
+    }
+  </style>
+</head>
+<body>
+  <input type="text" placeholder="색상 이름이나 HEX코드를 입력" id="input-color">
+
+  <script>
+    const $input = document.getElementById('input-color');
+    
+    $input.addEventListener('change', () => {
+      const inputColor = $input.value;
+      document.body.style.backgroundColor = inputColor;
+    });
+  </script>
+</body>
+</html>
