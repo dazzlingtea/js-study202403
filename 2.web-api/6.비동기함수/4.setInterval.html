@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p class="msg"></p>
+    <p id="clock"></p>
+
+    <script>
+      const $msg = document.querySelector(".msg");
+      // setInterval(() => {
+      //   for(let i = 0; i < 5; i++) {
+      //     console.log(i);
+      //   }
+      // }, 500);
+      // setInterval(()=> {
+      //   $msg.textContent += '안녕🐷\n'
+      // }, 2000);
+      
+      // 현재 시간 가져오기
+      const $clock = document.getElementById("clock");
+      // console.log(now.toLocaleTimeString());
+      // console.log(now.toLocaleDateString());
+      
+      setInterval(() => {
+        const now  = new Date();
+        $clock.textContent = now.toLocaleTimeString();
+      }, 1000);
+
+
+    </script>
+  </body>
+</html>

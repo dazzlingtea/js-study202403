@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="start">시작</button>
+  <button id="cancel">취소</button>
+  <p class="msg"></p>
+
+  <script>
+    const $start = document.getElementById('start');
+    const $cancel = document.getElementById('cancel');
+    const $msg = document.querySelector('.msg');
+
+    // 타이머를 변수에 저장
+    let timer = null;
+
+    $start.addEventListener('click', e => {
+
+      if(timer) { // 기존 타이머 대기열이 존재한다면
+        clearTimeout(timer) // 대기열 취소
+      }
+      // 메시지 초기회
+      $msg.textContent = '';
+
+      timer = setTimeout(() => {
+        $msg.textContent += '안녕🐹!!';
+        timer = null; // 타이머 실행 후 초기화
+      }, 2000);
+    });
+
+    $cancel.addEventListener('click', e => {
+      if(timer) {
+        clearTimeout(timer); // 타이머 취소
+        $msg.textContent = '메시지가 취소되었습니다.';
+        timer = null;
+      }
+    });
+  </script>
+</body>
+</html>
