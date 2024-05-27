@@ -150,18 +150,63 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script>
 
+
+      function makeMovieListDOM(movies) {
+        let tag = '';
+        
+        movies.forEach(({large_cover_image, title, year, rating}) => {
+          tag += `
+          <div class="movie">
+              <div class="img-box">
+                  <img src="${large_cover_image}" alt="표지사진">
+              </div>
+              <div class="inner">
+                  <div class="title">${title}</div>
+                  <div class="year">${year}</div>
+                  <div class="rating">${rating}</div>
+              </div>
+          </div>
+          `;
+          
+        });
+        document.querySelector('.movie-list').innerHTML = tag;
+      }
+      // 영화 API를 호출하는 함수
+      function fetchMovies(condition='download_count') {
+
+        fetch(`https://yts.mx/api/v2/list_movies.json?sort_by=${condition}`)
+          .then(response => response.json())
+          .then(json => {
+            // console.log(json.data.movies);
+            makeMovieListDOM(json.data.movies)
+          })
+      }
+      // 초기영화 정보 로딩
+      fetchMovies();
+      
+      // a태그 클릭이벤트
+      document.querySelector('header .gnb ul').addEventListener('click', e => {
+        // a태그 링크이동 기능 중지
+        e.preventDefault();
+        const id = e.target.id;
+        switch (id) {
+          case 's_rate':
+            fetchMovies('download_count');
+            break;
+          case 's_year':
+            fetchMovies('year');
+            break;
+          case 's_like':
+            fetchMovies('like_count');
+            break;
+        }
+      });
+
+
+
+      /*
       const URL = 'https://yts.mx/api/v2/list_movies.json';
       
-      // <div class="movie">
-      //   <div class="img-box">
-      //       <img src="https://yts.mx/assets/images/movies/doctor_who_the_day_of_the_doctor_2013/large-cover.jpg" alt="표지사진"/>
-      //   </div>
-      //   <div class="inner">
-      //       <div class="title">제목</div>
-      //       <div class="year">개봉년도</div>
-      //       <div class="rating">평점</div>
-      //   </div>
-      // </div>  
       const $movieContainer = document.querySelector('.movie-list');
       const renderMovies = movieList => {
         $movieContainer.innerHTML = '';
@@ -179,14 +224,14 @@
           $movieContainer.appendChild($div);
         });
       };
+      */
 
-      
+      /*
       fetch(URL)
         .then(res => res.json())
         .then(json => {
           renderMovies(json.data.movies);
         })
-        // .then(movies => renderMovies(movies))
       ;
       
       document.getElementById('s_rate').addEventListener('click', e => {
@@ -213,6 +258,7 @@
           .then(json => renderMovies(json.data.movies))
           ;
       });
+      */
     </script>
     </body>
     </html>
