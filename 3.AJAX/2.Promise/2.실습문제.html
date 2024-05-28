@@ -154,9 +154,9 @@
       function makeMovieListDOM(movies) {
         let tag = '';
         
-        movies.forEach(({large_cover_image, title, year, rating}) => {
+        movies.forEach(({id, large_cover_image, title, year, rating}) => {
           tag += `
-          <div class="movie">
+          <div class="movie" data-movie-id=”${id}” data-bs-toggle="modal" data-bs-target="#detailModal">
               <div class="img-box">
                   <img src="${large_cover_image}" alt="표지사진">
               </div>
@@ -171,13 +171,25 @@
         });
         document.querySelector('.movie-list').innerHTML = tag;
       }
+      // 영화 상세정보를 모달에 렌더링
+      function makeMovieDetailDOM({title, large_cover_image, description_full}) {
+        const $modalTitle = document.querySelector('.modal-title');
+        const $descImg = document.querySelector('.desc-image');
+        const $summary = document.querySelector('.movie-description');
+
+        $modalTitle.textContent = title;
+        $summary.textContent = description_full;
+        $descImg.src = large_cover_image;
+      }
+
+
       // 영화 API를 호출하는 함수
       function fetchMovies(condition='download_count') {
 
         fetch(`https://yts.mx/api/v2/list_movies.json?sort_by=${condition}`)
           .then(response => response.json())
           .then(json => {
-            // console.log(json.data.movies);
+            console.log(json.data.movies);
             makeMovieListDOM(json.data.movies)
           })
       }
@@ -202,7 +214,20 @@
         }
       });
 
-
+      const $movie = document.querySelector('.movie-list');
+      $movie.addEventListener('click', e => {
+        if(!e.target.matches('.movie-list .movie *')) return;
+        // console.log('영화클릭@')
+        
+        const movieId = e.target.closest('.movie').dataset.movieId;
+        console.log(movieId);
+        fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${movieId}`)
+            .then(res => res.json())
+            .then(json => {
+                makeMovieDetailDOM(json);
+            })
+            
+      });
 
       /*
       const URL = 'https://yts.mx/api/v2/list_movies.json';
@@ -224,9 +249,7 @@
           $movieContainer.appendChild($div);
         });
       };
-      */
-
-      /*
+ 
       fetch(URL)
         .then(res => res.json())
         .then(json => {
