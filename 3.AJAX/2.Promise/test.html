@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container">
+
+  </div>
+
+  <script>
+    function test() {
+      let tag = '';
+      for (let i = 1; i < 4; i++) {
+        tag += `
+          <div class="item">
+            <h2>${i} 테스트</h2>
+          </div>
+        `;
+      
+      }
+      const $div = document.querySelector('.container');
+      $div.innerHTML += tag;
+    }
+
+    test();
+    test();
+    test();
+  </script>
+</body>
+</html>
