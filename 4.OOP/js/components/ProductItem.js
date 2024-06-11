@@ -1,26 +1,41 @@
-
+import Component from "./Component.js";
 // Li 태그 렌더링
-class ProductItem {
-  constructor(prod) {
+class ProductItem extends Component {
+  constructor(tagId, prod, shoppingCart) {
+    super(tagId);
     this.prod = prod;
+    this.shoppingCart = shoppingCart;
   }
 
   render() {
     const { title, price, image, desc } = this.prod;
 
-    const $prodLi = document.createElement("li");
-    $prodLi.classList.add("product-item");
-    $prodLi.innerHTML = `
-      <div>
-        <img src="${image}" alt="${title}">
-        <div class="product-item__content">
-          <h2>${title}</h2>
-          <h3>${price}원</h3>
-          <p>${desc}</p>
-          <button>담기</button>
-        </div>
-      </div>
-      `;
+    // const $prodLi = document.createElement("li");
+    // $prodLi.classList.add("product-item");
+    const childHtml =  `
+    <div>
+    <img src="${image}" alt="${title}">
+    <div class="product-item__content">
+      <h2>${title}</h2>
+      <h3>${price}원</h3>
+      <p>${desc}</p>
+      <button>담기</button>
+    </div>
+    </div>
+    `;
+    const $prodLi = this.createElement('li', 'product-item', childHtml)
+    
+    const $btn = $prodLi.querySelector('button');
+    $btn.addEventListener('click', (e) => {
+      console.log(e.target);
+      console.log(this);
+      console.log(price);
+      console.log(title);
+      console.log('버튼 크릭!!');
+
+      this.shoppingCart.addToCart(this.prod);
+      
+    });
 
     return $prodLi;
   }
