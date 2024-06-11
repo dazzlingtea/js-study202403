@@ -1,5 +1,6 @@
 // import { Product } from "./components/products.js";
-import Product from "./components/products.js";
+import Product from "/components/Product.js";
+import ProductList from "./components/ProductList.js";
 
 
 // 상품 데이터
@@ -7,45 +8,12 @@ const p1 = new Product('에어팟', 200000, '에어팟으로 노래를 들어요
 const p2 = new Product('족발', 30000, '족발은 맛있쩡.', 'https://i.namu.wiki/i/I63sEiy-8vUXVhV-I0IZiS9ntT0INuKXgBYAE3QqUvOlToSoEqSgpvEbUmxsFTXtoBRN4WJolyAFEAlDdeZFhQ.webp' );
 
 // 서버에서 전송된 JSON
-const productList = {
-  products: [
+const productList = new ProductList([
     p1,
     p2, 
-    {
-      title: '요구르트',
-      price: 500,
-      desc: '요구르르르트',
-      image: 'https://blisgo.com/wp-content/uploads/elementor/thumbs/%EC%9A%94%EA%B5%AC%EB%A5%B4%ED%8A%B8-%EB%B3%91-p5n5r18iqjwaho4l8dypfovtexj3hmml83x90jofls.jpg',
-    }
-  ],
-  // render: function() {
-  render() {
-    const $prodList = document.createElement('ul');
-    $prodList.classList.add('product-list');
-    // 반복해서 li 태그를 생성
-    // console.log(this.products);  // 객체 내부이므로 products를 사용하려면 this 필요
-    this.products.forEach(prod => {
-      const $prodLi = document.createElement('li');
-      $prodLi.classList.add('product-item');
-      $prodLi.innerHTML = `
-      <div>
-        <img src="${prod.image}" alt="${prod.title}">
-        <div class="product-item__content">
-          <h2>${prod.title}</h2>
-          <h3>${prod.price}원</h3>
-          <p>${prod.desc}</p>
-          <button>담기</button>
-        </div>
-      </div>
-      `;
-      $prodList.appendChild($prodLi);
-
-    });
-    // div#app에 ul 추가
-    document.getElementById('app').appendChild($prodList);
-
-  }
-
-};
+    new Product('요구르트', 500, '요구르르르트', 'https://blisgo.com/wp-content/uploads/elementor/thumbs/%EC%9A%94%EA%B5%AC%EB%A5%B4%ED%8A%B8-%EB%B3%91-p5n5r18iqjwaho4l8dypfovtexj3hmml83x90jofls.jpg'),
+    new Product('치킨', 21000, '치킨 맛있엉', 'http://www.amnews.co.kr/news/photo/201706/22467_11650_433.jpg'),
+    new Product('쿼터파운드 치즈버거', 10000, '치즈가 맛있어요', 'https://www.mcdonalds.co.kr/upload/product/pcfile/1583728200175.png'),
+]);
 
 productList.render();
